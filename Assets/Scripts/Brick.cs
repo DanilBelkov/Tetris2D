@@ -15,10 +15,12 @@ public class Brick : MonoBehaviour
 
     private Vector3 _oldPosition;
     private MenuManager _menu;
+    private AudioPlayer _audioPlayer;
     private void Awake()
     {
         _oldPosition = transform.position;
         _menu = FindObjectOfType<MenuManager>();
+        _audioPlayer = FindObjectOfType<AudioPlayer>();
     }
 
     private void Update()
@@ -47,11 +49,9 @@ public class Brick : MonoBehaviour
             CheckMove();
             CheckForLines();
             _previousTime = Time.time;
-        }
-        
+        } 
         _oldPosition = transform.position;
     }
-    
     private void CheckMove()
     {
         foreach(Transform children in transform)
@@ -102,13 +102,13 @@ public class Brick : MonoBehaviour
         {
             int roundX = Mathf.RoundToInt(children.transform.position.x);
             int roundY = Mathf.RoundToInt(children.transform.position.y);
-            print(roundX + " - " + roundY);
 
             if(roundY == _height - 1)
                 _menu.GameOver();
 
             _grids[roundX, roundY] = children;// add grid to playzone
         }
+        _audioPlayer.PlauSoundFreez();
     }
     private void CheckForLines()
     {
@@ -137,6 +137,7 @@ public class Brick : MonoBehaviour
             Destroy(_grids[j, i].gameObject);
             _grids[j, i] = null;
         }
+        _audioPlayer.PlauSoundDeleteLine();
     }
     private void RowDown(int i)
     {

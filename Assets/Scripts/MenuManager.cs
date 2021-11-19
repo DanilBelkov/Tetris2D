@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -11,14 +9,17 @@ public class MenuManager : MonoBehaviour
     private GameObject _canvas;
     private bool _isGameOver;
 
+    private AudioPlayer _audioPlayer;
     private void Start()
     {
         Pause();
+        _audioPlayer = FindObjectOfType<AudioPlayer>();
     }
     private void Update()
     {
         if(Input.GetKeyDown(KeyCode.Escape))
         {
+            _audioPlayer.PlauSoundPause();
             Pause();
         }
     }
@@ -66,6 +67,7 @@ public class MenuManager : MonoBehaviour
 
     public void GameOver()
     {
+        _audioPlayer.PlauSoundGameOver();
         IsPlaying = false;
         _isGameOver = true;
         Pause();
